@@ -17,8 +17,7 @@
   - [Upgrade](#upgrade)
   - [Uninstallation](#uninstallation)
 - [Architecture](#-architecture)
-- [Usage](#-usage)
-  - [Magic xpi OpenTelemetry Configuration](#magic-xpi-opentelemetry-configuration)
+- [Magic xpi OpenTelemetry Configuration](#magic-xpi-opentelemetry-configuration)
 
 ## ✨ Features
 - Complete OpenTelemetry monitoring solution
@@ -138,7 +137,7 @@ You can view activity logs through the Grafana portal:
 4. Use LogQL to query and filter your logs
 ---
 
-
+Thank you.
 
 <div align="center">
 Made with ❤️ by the Magic Monitoring Team
