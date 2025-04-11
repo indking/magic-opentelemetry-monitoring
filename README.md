@@ -1,4 +1,4 @@
-# Magic Monitoring 🎯
+# Magic OpenTelemetry Monitoring 🎯
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Helm](https://img.shields.io/badge/Helm-v3-blue)](https://helm.sh)
 [![MicroK8s](https://img.shields.io/badge/MicroK8s-Latest-orange)](https://microk8s.io)
@@ -17,6 +17,8 @@
   - [Upgrade](#upgrade)
   - [Uninstallation](#uninstallation)
 - [Architecture](#-architecture)
+- [Usage](#-usage)
+  - [Magic xpi OpenTelemetry Configuration](#magic-xpi-opentelemetry-configuration)
 
 ## ✨ Features
 - Complete OpenTelemetry monitoring solution
@@ -112,9 +114,31 @@ The monitoring stack consists of:
 - AlertManager
 - Other supporting components
 
+## Magic xpi OpenTelemetry Configuration
 
+To configure Magic xpi for OpenTelemetry:
 
+1. Log in to Magic Monitor with admin credentials
+2. Navigate to Settings -> Admin Settings
+3. Under "OpenTelemetry Settings" section:
+   - Select "gRPC" as the exporter type
+   - Configure the collector endpoint URL (default: `http://<otel-collector-External-IP>:4317`)
+     Note: You will receive the External IP address after the Helm chart installation completes
+4. Save your configuration
+5. Verify data collection:
+   - Open Grafana portal (default: `http://<Grafana-External-IP>:3000`)
+   - Navigate to the "OpenTelemetry Monitor Prom Live" dashboard
+   - Confirm that metrics are being received
+
+### Viewing and Analyzing Logs
+You can view activity logs through the Grafana portal:
+1. Navigate to the Grafana UI
+2. Click on "Explore" in the left sidebar
+3. Select "Loki" as your data source
+4. Use LogQL to query and filter your logs
 ---
+
+
 
 <div align="center">
 Made with ❤️ by the Magic Monitoring Team
