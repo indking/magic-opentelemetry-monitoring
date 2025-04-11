@@ -1,144 +1,84 @@
-# OpenTelemetry Loki to Prometheus Bridge 🌉
+```markdown
+# 📘 Open Telemetry Dashboard Setup Documentation
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/downloads/)
-[![Docker](https://img.shields.io/badge/docker-supported-blue)](https://www.docker.com/)
-[![Kubernetes](https://img.shields.io/badge/kubernetes-supported-blue)](https://kubernetes.io/)
+This guide outlines the necessary prerequisites and step-by-step instructions to install, upgrade, and uninstall the `monitoring-stack` using a Helm chart.
 
-A powerful bridge that connects your Loki logs to Prometheus metrics, enabling seamless observability and monitoring of your applications.
+---
 
-![Architecture Overview](docs/images/architecture.png)
+## ✅ Prerequisites
 
-## 🚀 Features
+Ensure the following components are installed and configured before proceeding with the setup:
 
-- **Real-time Log Processing**: Continuously processes logs from Loki and converts them to Prometheus metrics
-- **Flexible Metric Generation**: Customizable metric generation based on log patterns
-- **Kubernetes Ready**: Native Kubernetes deployment support
-- **Rich Monitoring**: Comprehensive metrics for server and project status
-- **Robust Error Handling**: Detailed error tracking and reporting
-- **Configurable**: Easy configuration through environment variables
+- **Helm**
+- **kubectl**
+- **MicroK8s**
 
-## 📋 Prerequisites
+### MicroK8s Configuration
 
-- Python 3.8 or higher
-- Docker/Podman
-- Kubernetes cluster (for K8s deployment)
-- Loki instance
-- Prometheus instance
+- Enable the following MicroK8s addons:
+  ```bash
+  microk8s enable dns storage metallb
+  ```
+- Configure **MetalLB** with **at least 5 free IPs** in your local network.
+- Ensure **XPI** and **Kubernetes cluster nodes** are in the same network.
 
-## 🛠️ Quick Start
+### GHCR (GitHub Container Registry) Access
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/indking/opentelemetry-loki-prometheus-bridge.git
-   cd opentelemetry-loki-prometheus-bridge
-   ```
+- Ensure you have a **GitHub account**.
+- Authenticate with **GHCR** before pulling or pushing Helm charts.
 
-2. **Set up environment variables:**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your configuration
-   ```
+---
 
-3. **Build the Docker image:**
-   ```bash
-   # Linux
-   ./build.sh
-   
-   # Windows
-   build.bat
-   ```
+## 🔐 Login to GHCR
 
-4. **Deploy to Kubernetes:**
-   ```bash
-   # Linux
-   ./deploy-k8s.sh
-   
-   # Windows
-   deploy-k8s.bat
-   ```
+Authenticate Helm to interact with GHCR:
 
-## 🔧 Configuration
-
-| Environment Variable | Description | Default |
-|---------------------|-------------|---------|
-| Loki_SERVER_HOST | Loki server hostname | 10.9.9.149 |
-| Loki_SERVER_PORT | Loki server port | 3100 |
-| PROMETHEUS_GATEWAY | Prometheus pushgateway URL | http://10.9.8.59:9091 |
-| LOG_LEVEL | Logging level | INFO |
-| MAX_WORKERS | Maximum worker threads | 10 |
-
-## 📊 Metrics
-
-### Server Metrics
-- `project_name`: Name of the Project
-- `current_session_start`: Current Session Start Time
-- `latest_transaction_time`: Latest Transaction Time
-- `uptime_current_session_ns`: Uptime in Nanoseconds
-- `uptime_current_session_sec`: Uptime in Seconds
-
-### Performance Metrics
-- `total_errors_current_session`: Total Errors in Current Session
-- `errors_last_hour`: Errors in Last Hour
-- `total_flows_current_session`: Total Flows Executed
-- `flows_last_hour`: Flows Executed in Last Hour
-
-### Status Metrics
-- `server_status`: Current Server Status
-- `project_status`: Current Project Status
-- `server_count`: Count of Servers
-
-## 📈 Grafana Dashboard
-
-![Grafana Dashboard](docs/images/grafana-dashboard.png)
-
-Import our pre-configured Grafana dashboard for instant visualization of your metrics:
-- Dashboard ID: `12345`
-- [Download JSON](docs/dashboards/main-dashboard.json)
-
-## 🔍 Monitoring Examples
-
-### Server Status Monitoring
-```promql
-server_status{status="Running"}
+```bash
+echo <pat_key> | helm registry login ghcr.io --username <username> --password-stdin
 ```
 
-### Error Rate Alert
-```promql
-rate(errors_last_hour[5m]) > 10
+Replace `<username>` with your GitHub username and `<pat_key>` with your GitHub Personal Access Token (PAT).
+
+---
+
+## 🚀 Installation from GHCR
+
+Install the chart from GitHub Container Registry:
+
+```bash
+helm install monitoring-stack oci://ghcr.io/indking/charts/monitoring-stack --version <version> --namespace monitoring --create-namespace
 ```
 
-## 🤝 Contributing
+The current version is `0.1.2`. To install the latest package, use:
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+```bash
+helm install monitoring-stack oci://ghcr.io/indking/charts/monitoring-stack --version 0.1.2 --namespace monitoring --create-namespace
+```
 
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+---
 
-## 📝 License
+## ⬆️ Upgrade Chart Version
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+To upgrade the `monitoring-stack` to a newer version:
 
-## 🙏 Acknowledgments
+```bash
+helm upgrade monitoring-stack oci://ghcr.io/indking/charts/monitoring-stack --version <latest-version> --namespace monitoring
+```
 
-- OpenTelemetry Community
-- Loki Team
-- Prometheus Team
-- All our contributors
+---
 
-## 📞 Support
+## 🧹 Uninstallation
 
-- Create an [Issue](https://github.com/indking/opentelemetry-loki-prometheus-bridge/issues)
-- Join our [Discord Community](https://discord.gg/your-invite)
-- Email: support@example.com
+To remove the `monitoring-stack`:
 
-## 🔮 Roadmap
+```bash
+helm uninstall monitoring-stack --namespace monitoring
+```
 
-- [ ] Support for additional log formats
-- [ ] Enhanced metric customization
-- [ ] Real-time alerting integration
-- [ ] Multi-cluster support
-- [ ] Machine learning for anomaly detection
+⚠️ **Note**: This does not delete the `monitoring` namespace.
+
+To delete the namespace as well, run:
+
+```bash
+kubectl delete namespace monitoring
+```
