@@ -1,4 +1,3 @@
-```markdown
 # 📘 Open Telemetry Dashboard Setup Documentation
 
 This guide outlines the necessary prerequisites and step-by-step instructions to install, upgrade, and uninstall the `monitoring-stack` using a Helm chart.
@@ -16,9 +15,11 @@ Ensure the following components are installed and configured before proceeding w
 ### MicroK8s Configuration
 
 - Enable the following MicroK8s addons:
+
   ```bash
   microk8s enable dns storage metallb
   ```
+
 - Configure **MetalLB** with **at least 5 free IPs** in your local network.
 - Ensure **XPI** and **Kubernetes cluster nodes** are in the same network.
 
@@ -82,3 +83,5 @@ To delete the namespace as well, run:
 ```bash
 kubectl delete namespace monitoring
 ```
+
+---
