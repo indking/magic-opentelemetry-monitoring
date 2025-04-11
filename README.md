@@ -140,5 +140,5 @@ You can view activity logs through the Grafana portal:
 Thank you.
 
 <div align="center">
-Made with ❤️ by the Magic Monitoring Team
+Made with ❤️ by the Magic Team
 </div>
